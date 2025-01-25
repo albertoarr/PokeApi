@@ -15,7 +15,7 @@ export const PokemonCard = ({ url }: Props) => {
   const { pokemon } = usePokemon(url); // pokemon son los datos del hook usePokemon(url)
 
   // See selecciona el primer tipo del pokemon para elegir un color de fondo de tarjeta
-  /* @ts-ignore */
+  /* @ts-ignore */ // uso ts-ignore porque el IDE toma como undefined los datos de la interfaz
   const backgroundSelected = background[pokemon?.types[0]?.type?.name];
   
   return (
