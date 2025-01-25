@@ -26,9 +26,14 @@
       line-height: 32px;
       font-weight: 700;
     }
+    span:hover {
+      color:#b97d7d ;
+      transition-duration: 0.2s;
+    }
 
     svg {
       width: 24px;
     }
+    
   }
 }

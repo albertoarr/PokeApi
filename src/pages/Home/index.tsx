@@ -20,7 +20,6 @@ export const Home = () => {
     <div className={styles.home}>
       <header>
         <div onClick={backToHome}>
-          {/* icono svg */}
           <PokeballIconSmall />
           <span>Pokédex</span>
         </div>
