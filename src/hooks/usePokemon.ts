@@ -9,16 +9,10 @@ export const usePokemon = (url?: string, id?: string) => {
 
   // Función flecha asíncrona que pide al Api los datos del pokemon
   const fetchPokemon = async () => {
-    if (url) {
-      {
-        /* Si le pasas una URL*/
-      }
+    if (url) { {/* Si le pasas una URL*/}
       const { data }: any = await axios.get(url);
       setPokemon(data);
-    } else if (id) {
-      {
-        /* Si se le pasa un Id de pokemon*/
-      }
+    } else if (id) { {/* Si se le pasa un Id de pokemon*/}
       const { data }: any = await axios.get(
         `https://pokeapi.co/api/v2/pokemon/${id}`
       );
