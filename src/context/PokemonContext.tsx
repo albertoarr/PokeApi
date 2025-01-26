@@ -1,95 +1,97 @@
-/**
- * Un context en react se utiliza para compartir datos globales sin pasar props
- */
-
 import axios from "axios";
-
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, ReactNode } from "react";
 import { AllPokemonResult, PokeType, PokemonByTypeResult } from "../interfaces/types";
 
+// Interfaz del contexto
 interface ContextProps {
   types: PokeType[]; // lista de tipos
   filterSelected: PokeType; // filtro de pokemon seleccionado para filtrar
   pokemonFiltered: string[] | null; // lista de pokemon ya filtrados
-  changeTypeSelected: (type: PokeType) => void; //
+  changeTypeSelected: (type: PokeType) => void; // función para cambiar el tipo seleccionado
 }
 
+// Crear el contexto
 export const PokemonContext = createContext<ContextProps>({} as ContextProps);
 
-const PokemonProvider = ({ children }: any) => {
-  /*
-   * limit=1025 se asegura de recoger pokemon de la Api (todos hasta ahora)
-   * offset funciona para hacer paginación offset=0 significa que empiezas desde el primer pokemon
-   */
-  let allPokemonUrl = "https://pokeapi.co/api/v2/pokemon?limit=1025#offset=0";
+// Interfaz para las props del proveedor
+interface ProviderProps {
+  children: ReactNode; // Elementos hijos que usan el contexto
+  allPokemonUrl?: string; // URL para obtener la lista de todos los Pokémon (opcional)
+}
 
-  // State para filtrar tipo como "All" (aparecen todos los pokemon)
+// Componente proveedor del contexto
+const PokemonProvider = ({
+  children,
+  allPokemonUrl = "https://pokeapi.co/api/v2/pokemon?limit=1025&offset=0", // Valor por defecto  (hay 1025 pokemon normales en la Api)
+}: ProviderProps) => {
+  /*
+   * El valor por defecto de la URL de los Pokémon es el siguiente,
+   * pero puede ser sobreescrito desde el componente que use el Provider.
+   */
   const defaultState: PokeType = {
     name: "All",
-    url: allPokemonUrl,
+    url: allPokemonUrl, // URL de la API para obtener todos los Pokémon
   };
 
-  // Lista de todos los pokemons
-  const [allPokemon, setAllPokemon] = useState(null);
-  // Lista de pokemons en filtro
-  const [pokemonFiltered, setPokemonFiltered] = useState(null);
+  // Estado para almacenar la lista completa de Pokémon
+  const [allPokemon, setAllPokemon] = useState<string[] | null>(null);
+  // Estado para almacenar la lista filtrada de Pokémon
+  const [pokemonFiltered, setPokemonFiltered] = useState<string[] | null>(null);
+  // Estado para almacenar los tipos de Pokémon (filtro)
+  const [types, setTypes] = useState<PokeType[]>([defaultState]);
+  // Estado para almacenar el tipo seleccionado (por defecto "All")
+  const [filterSelected, setFilterSelected] = useState<PokeType>(defaultState);
 
-  // Lista de todos los tipos
-  const [types, setTypes] = useState([defaultState]);
-  // Lista de filtro seleccionado (default para todos)
-  const [filterSelected, setFilterSelected] = useState(defaultState);
-
-  // ---
+  // Función para cambiar el tipo de Pokémon seleccionado
   const changeTypeSelected = async (type: PokeType) => {
     setFilterSelected(type);
 
-    const { data } = await axios.get(type?.url!);
-    let pokemons = data?.pokemon?.map(
-      ({ pokemon }: PokemonByTypeResult) => pokemon?.url
+    const { data } = await axios.get(type?.url!); // Realiza la solicitud a la API
+    const pokemons = data?.pokemon?.map(
+      ({ pokemon }: PokemonByTypeResult) => pokemon?.url // Extrae las URLs de los Pokémon filtrados por tipo
     );
-    
-    // Si tipo es all los pokemon mostrados son todos, si es de otro tipo se filtran
-    type.name == "All" ? setPokemonFiltered(allPokemon) : setPokemonFiltered(pokemons);
+
+    // Si el tipo es "All", se muestran todos los Pokémon
+    type.name === "All"
+      ? setPokemonFiltered(allPokemon)
+      : setPokemonFiltered(pokemons); // Si no, se muestran solo los filtrados
   };
 
-  // Función flecha que recupera todos los pokemon y los guarda en las listas de pokemon
+  // Función para obtener todos los Pokémon desde la URL proporcionada
   const getallPokemon = async () => {
-    const { data } = await axios.get(allPokemonUrl); // Petición Api
+    const { data } = await axios.get(allPokemonUrl); // Realiza la solicitud a la API
 
-    console.log(data);
-
-    let pokemons = data?.results?.map(
-      // Se recorre las consultas
-      (pokemon: AllPokemonResult) => pokemon?.url // Se recupera el url
+    const pokemons = data?.results?.map(
+      (pokemon: AllPokemonResult) => pokemon?.url // Extrae las URLs de los Pokémon
     );
 
-    // Ambos states con mismo valor
+    // Establece los estados con la lista de Pokémon obtenidos
     setAllPokemon(pokemons);
-    setPokemonFiltered(pokemons);
+    setPokemonFiltered(pokemons); // Inicialmente muestra todos los Pokémon
   };
 
-  // Recuperar tipos de los pokemon
+  // Función para obtener los tipos de Pokémon desde la API
   const getPokemonsType = async () => {
-    const { data } = await axios.get("https://pokeapi.co/api/v2/type"); // Petición Api
-    setTypes([...types, ...data.results]); // Lista de tipos obtenida
+    const { data } = await axios.get("https://pokeapi.co/api/v2/type"); // Realiza la solicitud a la API de tipos
+    setTypes([...types, ...data.results]); // Establece los tipos de Pokémon en el estado
   };
 
+  // Efecto que se ejecuta al cargar el componente por primera vez
   useEffect(() => {
-    // Cuando se ejecuta por primera vez se pide al Api
-    getPokemonsType();
-    getallPokemon();
-  }, []);
+    getPokemonsType(); // Obtiene los tipos de Pokémon
+    getallPokemon(); // Obtiene todos los Pokémon
+  }, [allPokemonUrl]); // Re-ejecuta si cambia la URL de los Pokémon
 
   return (
     <PokemonContext.Provider
       value={{
-        types,
-        filterSelected,
-        pokemonFiltered,
-        changeTypeSelected,
+        types, // Tipos de Pokémon
+        filterSelected, // Tipo de Pokémon seleccionado
+        pokemonFiltered, // Pokémon filtrados
+        changeTypeSelected, // Función para cambiar el tipo seleccionado
       }}
     >
-      {children}
+      {children} {/* Renderiza los hijos que tienen acceso a este contexto */}
     </PokemonContext.Provider>
   );
 };

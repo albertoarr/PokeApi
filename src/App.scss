@@ -1,0 +1,35 @@
+.generation-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    gap: 10px;
+    justify-content: center;
+    margin-top: auto;
+    background-color: #ccc;
+    
+    button {
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s;
+  
+      &:hover {
+        background-color: #f5f5f5;
+        transform: scale(1.05);
+      }
+  
+      &.active {
+        background-color: #ffcc00; /* Color destacado para el botón activo */
+        color: white;
+        font-weight: bold;
+      }
+  
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+  

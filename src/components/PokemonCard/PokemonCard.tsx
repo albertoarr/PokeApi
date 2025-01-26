@@ -17,27 +17,18 @@ export const PokemonCard = ({ url }: Props) => {
   // See selecciona el primer tipo del pokemon para elegir un color de fondo de tarjeta
   /* @ts-ignore */ // uso ts-ignore porque el IDE toma como undefined los datos de la interfaz
   const backgroundSelected = background[pokemon?.types[0]?.type?.name];
-  
-  return (
-    <Link to={`/${pokemon?.id}`} className={styles.pokeCard}> {/* Enlace al detalle */}
 
+  return (
+    <Link to={`/${pokemon?.id}`} className={styles.pokeCard}>
+      {/* Enlace al detalle */}
       <div style={{ borderColor: backgroundSelected }} className={styles.top}>
-        
-        <span style={{ color: backgroundSelected }}>#{pokemon?.id}</span> {/* Id del pokemon*/}
-        
+        {/* Id del pokemon*/}
+        <span style={{ color: backgroundSelected }}>#{pokemon?.id}</span>{" "}
         {/* 
-            Si una de los sprites (dreamworld o estándar) se muestra.
-            Si no existe se muestra una pantalla de cargando (componente Loading)
+            Si el sprite no se muestra se muestra el Loader
          */}
-        {pokemon?.sprites?.other?.dream_world?.front_default || pokemon?.sprites?.front_default 
-        ? (
-          <img
-            src={
-              pokemon?.sprites?.other?.dream_world?.front_default ||
-              pokemon?.sprites?.front_default
-            }
-            alt={pokemon?.name}
-          />
+        {pokemon?.sprites?.front_default ? (
+          <img src={pokemon?.sprites?.front_default} alt={pokemon?.name} />
         ) : (
           <div className={styles.loadingContainer}>
             <Loader color={backgroundSelected} />

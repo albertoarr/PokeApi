@@ -9,10 +9,10 @@
   .info {
     max-width: 650px;
     width: 95%;
-    background-color: white;
+    background-color: #ddd;
     height: 65vh;
     bottom: 0;
-    position: relative;
+    position:sticky;
     margin-bottom: 1rem;
     border-radius: 8px;
     display: flex;
