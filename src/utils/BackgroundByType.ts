@@ -20,11 +20,10 @@ export type PokeTypes =
   | "unknown"
   | "shadow";
 
-
-  /** 
-   * Background funciona como un diccionario 
-   *    - background[normal]: *muestra el color #AAA67F*
-   *  */
+/**
+ * Background funciona como un diccionario
+ *    - background[normal]: *muestra el color #AAA67F*
+ *  */
 export const background: { [key in PokeTypes]: string } = {
   normal: "#AAA67F",
   fighting: "#C12239",

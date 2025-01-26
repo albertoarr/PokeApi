@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './SideBar.scss'; // Importamos los estilos SCSS
+import React, { useState } from "react";
+import "./SideBar.scss"; // Importamos los estilos SCSS
 
 const SideBar = () => {
   // Estado para manejar el valor numérico según la generación seleccionada
@@ -45,31 +45,49 @@ const SideBar = () => {
       <h2>Selecciona una Generación</h2>
       <ul>
         <li>
-          <button onClick={() => handleGenerationSelect(1)}>Generación 1</button>
+          <button onClick={() => handleGenerationSelect(1)}>
+            Generación 1
+          </button>
         </li>
         <li>
-          <button onClick={() => handleGenerationSelect(2)}>Generación 2</button>
+          <button onClick={() => handleGenerationSelect(2)}>
+            Generación 2
+          </button>
         </li>
         <li>
-          <button onClick={() => handleGenerationSelect(3)}>Generación 3</button>
+          <button onClick={() => handleGenerationSelect(3)}>
+            Generación 3
+          </button>
         </li>
         <li>
-          <button onClick={() => handleGenerationSelect(4)}>Generación 4</button>
+          <button onClick={() => handleGenerationSelect(4)}>
+            Generación 4
+          </button>
         </li>
         <li>
-          <button onClick={() => handleGenerationSelect(5)}>Generación 5</button>
+          <button onClick={() => handleGenerationSelect(5)}>
+            Generación 5
+          </button>
         </li>
         <li>
-          <button onClick={() => handleGenerationSelect(6)}>Generación 6</button>
+          <button onClick={() => handleGenerationSelect(6)}>
+            Generación 6
+          </button>
         </li>
         <li>
-          <button onClick={() => handleGenerationSelect(7)}>Generación 7</button>
+          <button onClick={() => handleGenerationSelect(7)}>
+            Generación 7
+          </button>
         </li>
         <li>
-          <button onClick={() => handleGenerationSelect(8)}>Generación 8</button>
+          <button onClick={() => handleGenerationSelect(8)}>
+            Generación 8
+          </button>
         </li>
         <li>
-          <button onClick={() => handleGenerationSelect(9)}>Generación 9</button>
+          <button onClick={() => handleGenerationSelect(9)}>
+            Generación 9
+          </button>
         </li>
       </ul>
 

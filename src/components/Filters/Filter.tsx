@@ -8,11 +8,16 @@ import { background } from "../../utils/BackgroundByType";
 import styles from "./styles.module.scss";
 
 export const Filters = () => {
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  const { types, filterSelected, changeTypeSelected } = useContext(PokemonContext);
+  // Define si se abre el selector o no
+  const [open, setOpen] = useState(false); 
+  // Para volver a la página 1 al cambiar tipos
+  const navigate = useNavigate(); 
+  // Recuperar el contexto 
+  const { types, filterSelected, changeTypeSelected } =useContext(PokemonContext); 
+  // Usar la paginación
   const { changePage } = usePagination();
 
+  // Al cambiar de tipo se reinicia la paginación
   const onChangeType = (type: PokeType) => {
     changePage(1);
     navigate("/?page=1");
@@ -20,14 +25,14 @@ export const Filters = () => {
   };
 
   return (
-    <div className={styles.ordersContainer} onClick={() => setOpen(!open)}>
+    <div className={styles.ordersContainer} onClick={() => setOpen(!open)}> {/* Cambia el State popoup*/}
       <div className={styles.container}>
-        <div className={open ? styles.orderClose : styles.orderOpen}>
+        <div className={open ? styles.orderClose : styles.orderOpen}>{/* Si es open se intenta abrir popup */}
           <span>{filterSelected?.name}</span>
         </div>
-
-        {open && types && (
-          <div className={styles.orders}>
+{/* Si open es true y types existe se abre el popup*/}
+        {open && types && ( 
+          <div className={styles.orders}> 
             {types.map((type: PokeType) => (
               <div
                 key={type.name}
